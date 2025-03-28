@@ -23,7 +23,6 @@ const User = require("./models/user.js");
 const listingRouter = require("./routes/listing.js");
 const userRouter = require("./routes/user.js");
 const reviewRouter = require("./routes/review.js");
-const Listing = require("./models/listing.js"); 
 
 
 
@@ -61,11 +60,6 @@ const store= MongoStore.create({
 store.on("error",()=>{
     console.log("ERROR in MONGO SESSION STORE",err);
 });
-
-app.get("/", wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", { allListings });
-}));
 
 
 const sessionOption={
@@ -108,6 +102,10 @@ app.use((req,res,next)=>{
     res.locals.currUser=req.user;
     
     next();
+});
+
+app.get("/", (req, res) => {
+    res.redirect("/listings");
 });
 
 // Middleware to validate listings
