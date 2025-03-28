@@ -145,9 +145,11 @@ const validateListing = (req, res, next) => {
 
 // Use Routes
 // Correct order in app.js
-app.use("/", userRouter);         // Correct place for userRouter
-app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
+       // Correct place for userRouter
+app.use("/listings", listingRouter);
+app.use("/", userRouter);  
+
 
 // Error Handling
 app.all("*", (req, res, next) => {
@@ -162,6 +164,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-app.listen(5000, () => {
-    console.log("Server is running on port 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
