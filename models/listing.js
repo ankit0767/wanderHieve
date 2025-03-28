@@ -8,8 +8,9 @@ const listingSchema = new Schema({
         required: true,
     },
     image: {
-    filename: { type: String, default: "listingimage" },
-    url: { type: String, default: "https://unsplash.com/photos/a-view-of-a-city-from-the-water-xLQM7Tnqdpg" }
+        url: String,
+        filename: String,
+   
 },
 
     description: String,  // Fixed spelling mistake
@@ -22,10 +23,15 @@ const listingSchema = new Schema({
             ref: "Review"
         },
     ],
+    owner:{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+
+    },
 });
-listingSchema.post("findOneAndDelete", async(listing)=>{
-    if(listing){
-        await review.deleteMany({_id: {$in: listing.reviews}});
+listingSchema.post("findOneAndDelete", async function(listing){
+    if(listing && listing.reviews.length>0){
+        await Review.deleteMany({_id: {$in: listing.reviews}});
 
     }
    
